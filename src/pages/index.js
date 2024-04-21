@@ -1,64 +1,52 @@
-import React from "react";
-import { graphql, StaticQuery } from "gatsby";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-const BitcoinData = () => (
-  <StaticQuery
-    query={graphql`
-      query {
-        allMongodbBitcoinRobbcoin1 {
-          edges {
-            node {
-              id
-              time {
-                updated
-                updatedISO
-                updateduk
-              }
-              disclaimer
-              chartName
-              bpi {
-                USD {
-                  code
-                  symbol
-                  rate
-                  description
-                  rate_float
-                }
-                GBP {
-                  code
-                  symbol
-                  rate
-                  description
-                  rate_float
-                }
-                EUR {
-                  code
-                  symbol
-                  rate
-                  description
-                  rate_float
-                }
-              }
-            }
-          }
-        }
+const BitcoinData = () => {
+  const [bitcoinData, setBitcoinData] = useState(null);
+  const [githubData, setGithubData] = useState(null);
+
+  useEffect(() => {
+    const fetchBitcoinData = async () => {
+      try {
+        // Fetch Bitcoin data
+        const bitcoinResponse = await axios.get(
+          "https://api.coindesk.com/v1/bpi/currentprice.json"
+        );
+        setBitcoinData(bitcoinResponse.data);
+
+        // Fetch GitHub data
+        const githubResponse = await axios.get(
+          "https://api.github.com/repos/robbfox/bitcoin"
+        );
+        setGithubData(githubResponse.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
-    `}
-    render={data => (
-      <div style={{ background: "#f0f0f0", padding: "20px" }}>
-        <h1 style={{ fontSize: "24px", marginBottom: "20px" }}>Robb's Bitcoin Data Page</h1>
-        {data.allMongodbBitcoinRobbcoin1.edges.map(({ node }) => (
-          <div key={node.id} style={{ fontSize: "20px", marginBottom: "20px" }}>
-            <p>Updated: {node.time.updated}</p>
-            <p>USD: {node.bpi.USD.rate}</p>
-            <p>GBP: {node.bpi.GBP.rate}</p>
-            <p>EUR: {node.bpi.EUR.rate}</p>
-            <p>Disclaimer: {node.disclaimer}</p>
-          </div>
-        ))}
-      </div>
-    )}
-  />
-);
+    };
+
+    fetchBitcoinData();
+  }, []);
+
+  return (
+    <div style={{ background: "#f0f0f0", padding: "20px" }}>
+      <h1 style={{ fontSize: "24px", marginBottom: "20px" }}>
+        Robb's Bitcoin Data Page
+      </h1>
+      {bitcoinData && githubData && (
+        <div style={{ fontSize: "20px", marginBottom: "20px" }}>
+          <p>Updated: {bitcoinData.time.updated}</p>
+          <p>USD: {bitcoinData.bpi.USD.rate}</p>
+          <p>GBP: {bitcoinData.bpi.GBP.rate}</p>
+          <p>EUR: {bitcoinData.bpi.EUR.rate}</p>
+          <p>Disclaimer: {bitcoinData.disclaimer}</p>
+          <p>GitHub Repo Name: {githubData.full_name}</p>
+          <p>Stars: {githubData.stargazers_count}</p>
+          <p>Watchers: {githubData.watchers_count}</p>
+          {/* Add more data fields as needed */}
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default BitcoinData;
