@@ -11,9 +11,7 @@ const WeatherData = () => {
     const fetchWeatherData = async () => {
       try {
         // Fetch Weather data
-        const weatherResponse = await axios.get(
-          "https://api.open-meteo.com/v1/forecast?latitude=51.42&longitude=-0.11&current=temperature_2m,precipitation,rain,showers,wind_speed_10m&hourly=temperature_2m,apparent_temperature,precipitation_probability,rain,showers,wind_speed_10m&timezone=Europe%2FLondon"
-        );
+        const weatherResponse = await axios.get(process.env.REACT_APP_OPEN_METEO_URL)
         setWeatherData(weatherResponse.data);
         const currentDateObj = new Date();
         const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
