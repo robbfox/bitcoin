@@ -5,6 +5,7 @@ const WeatherData = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [displayedDate, setDisplayedDate] = useState(null);
   const [currentDate, setCurrentDate] = useState(null);
+  const [startIndex, setStartIndex] = useState(0);
 
   useEffect(() => {
     const fetchWeatherData = async () => {
@@ -19,6 +20,9 @@ const WeatherData = () => {
         const formattedDate = new Intl.DateTimeFormat('en-US', options).format(currentDateObj);
         setDisplayedDate(formattedDate);
         setCurrentDate(currentDateObj);
+        const currentHour = currentDateObj.getHours();
+        const startIndex = weatherResponse.data.hourly.time.findIndex(time => parseInt(time.split("T")[1].split(":")[0]) >= currentHour);
+        setStartIndex(startIndex >= 0 ? startIndex : 0);
       } catch (error) {
         console.error("Error fetching weather data:", error);
       }
@@ -57,16 +61,16 @@ const WeatherData = () => {
           <p>Wind Speed: {weatherData.current.wind_speed_10m} km/h</p>
           <h2>Hourly Forecast:</h2>
           <div style={{ display: "flex", flexWrap: "wrap" }}>
-            {weatherData.hourly.time.map((time, index) => (
+            {weatherData.hourly.time.slice(startIndex).map((time, index) => (
               <div key={index} style={{ width: "calc(20% - 10px)", margin: "5px", border: "1px solid #ccc", padding: "10px" }}>
                 <p>{new Date(time).toLocaleDateString('en-US', { weekday: 'long' })}</p>
                 <p>Time: {time.split("T")[1]}</p>
-                <p>Temperature: {weatherData.hourly.temperature_2m[index]}°C</p>
-                <p>Apparent Temperature: {weatherData.hourly.apparent_temperature[index]}°C</p>
-                <p>Precipitation Probability: {weatherData.hourly.precipitation_probability[index]}</p>
-                <p>Rain: {weatherData.hourly.rain[index]}</p>
-                <p>Showers: {weatherData.hourly.showers[index]}</p>
-                <p>Wind Speed: {weatherData.hourly.wind_speed_10m[index]} km/h</p>
+                <p>Temperature: {weatherData.hourly.temperature_2m[index + startIndex]}°C</p>
+                <p>Apparent Temperature: {weatherData.hourly.apparent_temperature[index + startIndex]}°C</p>
+                <p>Precipitation Probability: {weatherData.hourly.precipitation_probability[index + startIndex]}</p>
+                <p>Rain: {weatherData.hourly.rain[index + startIndex]}</p>
+                <p>Showers: {weatherData.hourly.showers[index + startIndex]}</p>
+                <p>Wind Speed: {weatherData.hourly.wind_speed_10m[index + startIndex]} km/h</p>
               </div>
             ))}
           </div>
