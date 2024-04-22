@@ -49,17 +49,18 @@ const WeatherData = () => {
 
   return (
     <div style={{ background: "#f0f0f0", padding: "20px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <h1 style={{ fontSize: "28px", marginBottom: "20px" }}>Robb's Weather Page</h1>
       {weatherData && (
         <div style={{ width: "100%", maxWidth: "1200px", fontSize: "20px", marginBottom: "20px" }}>
-          <h1 style={{ fontSize: "24px", marginBottom: "20px" }}>
+          <h2 style={{ fontSize: "24px", marginBottom: "20px" }}>
             Today: {displayedDate}
-          </h1>
+          </h2>
           <p>Current Temperature: {weatherData.current.temperature_2m}°C</p>
           <p>Precipitation: {weatherData.current.precipitation}</p>
           <p>Rain: {weatherData.current.rain}</p>
           <p>Showers: {weatherData.current.showers}</p>
           <p>Wind Speed: {weatherData.current.wind_speed_10m} km/h</p>
-          <h2>Hourly Forecast:</h2>
+          <h3>Hourly Forecast:</h3>
           <div style={{ display: "flex", flexWrap: "wrap" }}>
             {weatherData.hourly.time.slice(startIndex).map((time, index) => (
               <div key={index} style={{ width: "calc(20% - 10px)", margin: "5px", border: "1px solid #ccc", padding: "10px" }}>
