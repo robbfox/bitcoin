@@ -10,9 +10,11 @@ const WeatherData = () => {
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {
-        // Fetch Weather data
+        const latitude = process.env.GATSBY_LATITUDE;
+        const longitude = process.env.GATSBY_LONGITUDE;
+        
         const weatherResponse = await axios.get(
-          "https://api.open-meteo.com/v1/forecast?latitude=51.415332&longitude=-0.113713&current=temperature_2m,precipitation,rain,showers,wind_speed_10m&hourly=temperature_2m,apparent_temperature,precipitation_probability,rain,showers,wind_speed_10m&timezone=Europe%2FLondon"
+          `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,precipitation,rain,showers,wind_speed_10m&hourly=temperature_2m,apparent_temperature,precipitation_probability,rain,showers,wind_speed_10m&timezone=Europe%2FLondon`
         );
         setWeatherData(weatherResponse.data);
         const currentDateObj = new Date();

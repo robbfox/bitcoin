@@ -5,4 +5,7 @@ module.exports = {
     author: `@gatsbyjs`,
     siteUrl: `https://gatsbystarterdefaultsource.gatsbyjs.io/`,
   },
- }
+  }
+   require("dotenv").config({
+    path: `.env.${process.env.NODE_ENV}`,
+  })
