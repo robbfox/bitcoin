@@ -12,7 +12,7 @@ const WeatherData = () => {
       try {
         // Fetch Weather data
         const weatherResponse = await axios.get(
-          "https://api.open-meteo.com/v1/forecast?latitude=51.42&longitude=-0.11&current=temperature_2m,precipitation,rain,showers,wind_speed_10m&hourly=temperature_2m,apparent_temperature,precipitation_probability,rain,showers,wind_speed_10m&timezone=Europe%2FLondon"
+          "https://api.open-meteo.com/v1/forecast?latitude=51.415332&longitude=-0.113713&current=temperature_2m,precipitation,rain,showers,wind_speed_10m&hourly=temperature_2m,apparent_temperature,precipitation_probability,rain,showers,wind_speed_10m&timezone=Europe%2FLondon"
         );
         setWeatherData(weatherResponse.data);
         const currentDateObj = new Date();
